@@ -1,0 +1,70 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 400,
+  "height": 370,
+  "title": {
+    "text": "Population by Age Group"
+  },
+  "description": "Horizontal bar chart of total population by age group for the overall ethnicity category.",
+  "data": {
+    "url": "data/population_state.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [
+    {
+      "filter": "datum.ethnicity === 'overall'"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "sum",
+          "field": "population",
+          "as": "total_population"
+        }
+      ],
+      "groupby": [
+        "age"
+      ]
+    },
+    {
+      "sort": [
+        {
+          "field": "age"
+        }
+      ]
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "age",
+      "type": "ordinal",
+      "sort": "ascending",
+      "title": "Age Group",
+      "axis": {
+        "title": "Age Group",
+        "labelAngle": 0
+      }
+    },
+    "x": {
+      "field": "total_population",
+      "type": "quantitative",
+      "title": "Total Population (thousands)"
+    },
+    "tooltip": [
+      {
+        "field": "age",
+        "type": "nominal",
+        "title": "Age Group"
+      },
+      {
+        "field": "total_population",
+        "type": "quantitative",
+        "format": ",.2f",
+        "title": "Total Population"
+      }
+    ]
+  }
+}
